@@ -41,7 +41,7 @@ int main(){
 		if(lineCount % numberOfFiles == 0){
 			currentOutputFile.close();
 			currentOutputFile.open(getCurrentFileName(++currentFileIdx));
-		}
+		} 
 	}	
 
 	return 0;
