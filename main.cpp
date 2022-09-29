@@ -13,6 +13,16 @@ void readInput(string &filename, int &numberOfFiles){
 	cout << "Enter the number of files to be split into: ";
 	cin >> numberOfFiles;
 }
+ 
+int getTotalNumberOfLines(string filename){
+	ifstream file(filename);
+	int numberOfLines = 0;
+	string line;
+	while(getline(file, line)){
+		numberOfLines++;
+	}
+	return numberOfLines;
+}
 
 int main(){
 	string filename, line;
@@ -25,23 +35,22 @@ int main(){
 	currentOutputFile.open(getCurrentFileName(currentFileIdx));
 
 	if(!file){
-        std::cerr << "Failed to open file\n";
-        return EXIT_FAILURE;
-    }
+		std::cerr << "Failed to open file\n";
+		return EXIT_FAILURE;
+	}
+
+	int totalNumberOfLines = getTotalNumberOfLines(filename);			
 
 	while(getline(file, line)){
 		currentOutputFile << line << '\n';
 		lineCount++;
 		
-		cout << "Current line count: " << lineCount << endl;
-		cout << "Current file idx" << currentFileIdx << endl;
-		
 		if(currentFileIdx == numberOfFiles) continue;
 		
-		if(lineCount % numberOfFiles == 0){
+		if(lineCount % (totalNumberOfLines / numberOfFiles) == 0){
 			currentOutputFile.close();
 			currentOutputFile.open(getCurrentFileName(++currentFileIdx));
-		} 
+		}
 	}	
 
 	return 0;
